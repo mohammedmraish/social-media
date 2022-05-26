@@ -1,0 +1,70 @@
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="massages?.length === 0">
+      No messages yet... say hi by using the message box below
+    </div>
+
+    <ul *ngIf="massages?.length > 0" class="chat">
+      <li *ngFor="let massage of massages">
+        <div>
+          <span class="chat-img float-end">
+            <img
+              class="rounded-circle"
+              src="{{ massage.senderPhotoUrl || './assets/user.png' }}"
+              alt="{{ massage.senderUsername }}"
+            />
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <small class="text-muted">
+                <span class="fa fa-clock-o">{{
+                  massage.messageSent | timeago
+                }}</span>
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    !massage.dateRead && massage.senderUsername != username
+                  "
+                >
+                  (unread)</span
+                >
+                <span
+                  class="text-success"
+                  *ngIf="massage.dateRead && massage.senderUsername != username"
+                >
+                  read {{ massage.dateRead | timeago }}</span
+                >
+              </small>
+            </div>
+            <p>{{ massage.content }}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="car-footer">
+    <form #massageForm="ngForm" (ngSubmit)="sendMassage()" autocomplete="off">
+      <div class="input-group">
+        <input
+          name="massageContent"
+          required
+          [(ngModel)]="massageContent"
+          type="text"
+          class="form-control input-sm"
+          placeholder="Send a private message"
+        />
+        <div class="input-groupt-append">
+          <button
+            [disabled]="massageForm.invalid"
+            class="btn btn-primary"
+            type="submit"
+            (click)="sendMassage()"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
